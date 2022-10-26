@@ -53,6 +53,10 @@ router.get("/", auth.optional, function(req, res, next) {
     query.tagList = { $in: [req.query.tag] };
   }
 
+  if(typeof req.query.title !== "undefined"){
+    query.title =  req.query.title
+  }
+
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
     req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
@@ -170,21 +174,7 @@ router.get("/:item", auth.optional, function(req, res, next) {
     .catch(next);
 });
 
-//get using title
 
-router.get("/:title",auth.required,async(req,res) => {
-  const title = req.param
-  try{
-    const foundItem = await Item.find({title})
-    console.log(foundItem)
-    return res.status(200).json({
-      Item:foundItem
-    })
-  }
-  catch(err){
-    return res.status(404)
-  }
-})
 
 // update item
 router.put("/:item", auth.required, function(req, res, next) {
