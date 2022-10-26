@@ -175,7 +175,7 @@ router.get("/:item", auth.optional, function(req, res, next) {
 router.get("/:title",auth.required,async(req,res) => {
   const title = req.param
   try{
-    const foundItem = await Item.findOne({title})
+    const foundItem = await Item.find({title})
     console.log(foundItem)
     return res.status(200).json({
       Item:foundItem
