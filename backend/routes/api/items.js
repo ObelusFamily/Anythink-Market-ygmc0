@@ -170,6 +170,22 @@ router.get("/:item", auth.optional, function(req, res, next) {
     .catch(next);
 });
 
+//get using title
+
+router.get("/:title",auth.required,async(req,res) => {
+  const title = req.param
+  try{
+    const foundItem = await Item.findOne({title})
+    console.log(foundItem)
+    return res.status(200).json({
+      Item:foundItem
+    })
+  }
+  catch(err){
+    return res.status(404)
+  }
+})
+
 // update item
 router.put("/:item", auth.required, function(req, res, next) {
   User.findById(req.payload.id).then(function(user) {
