@@ -53,6 +53,14 @@ router.get("/", auth.optional, function(req, res, next) {
     query.tagList = { $in: [req.query.tag] };
   }
 
+  if(typeof req.query.title !== "undefined"){
+    query.title =  {
+      $text : {
+        $search : req.query.title
+      }
+    }
+  }
+
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
     req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
@@ -169,6 +177,8 @@ router.get("/:item", auth.optional, function(req, res, next) {
     })
     .catch(next);
 });
+
+
 
 // update item
 router.put("/:item", auth.required, function(req, res, next) {
